@@ -12,11 +12,16 @@ SDL_Window* gWindow = NULL;
 
 bool InitSDL();
 void CloseSDL();
+bool Update();
 
 int main(int argc, char* args[]) {
 	if (InitSDL()) { //if SDL initializes successfully
 		//then...
-		SDL_Delay(5000); //wait for 5 seconds, this will be replaced with a game loop
+		bool quit = false;
+
+		while (!quit) {
+			quit = Update();
+		}
 	}
 
 	CloseSDL(); //once the delay is over then SDL will close destroying memory that is being used up
@@ -67,4 +72,28 @@ void CloseSDL() //this function will destroy anything SDL based left in the memo
 
 	IMG_Quit(); //unloads the IMG related libraries
 	SDL_Quit(); //unloads the SDL related libraries
+}
+
+bool Update()
+{
+	SDL_Event eventHandler;
+
+	SDL_PollEvent(&eventHandler);
+
+	switch (eventHandler.type) {
+	case SDL_QUIT: //this event is activated by clicking the X button on the window
+		return true; //causes the game loop to end
+		break;
+	case SDL_KEYUP:
+		switch (eventHandler.key.keysym.sym) {
+		case SDLK_ESCAPE: //if the player presses Esc then the game will quit
+			return true;
+			break;
+
+		}
+	
+		break;
+	}
+
+	return false; //since the player has not quit then they want to continue playing therefore Update returns false
 }
