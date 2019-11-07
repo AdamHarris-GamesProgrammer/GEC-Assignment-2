@@ -201,5 +201,3 @@ void FreeTexture()
 	}
 }
 
-//TODO comment all texture loading code
-//TODO Complete the additional work section on the SDL Tutorial 4 document
