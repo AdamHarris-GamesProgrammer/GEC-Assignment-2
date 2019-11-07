@@ -5,13 +5,16 @@
 #include <iostream>
 
 #include "Constants.h"
+#include "Texture2D.h"
+#include "Commons.h"
 
 using namespace std;
 
 SDL_Window* gWindow = NULL;
 
 SDL_Renderer* gRenderer = NULL;
-SDL_Texture* gTexture = NULL;
+
+Texture2D* gTexture = NULL;
 
 bool InitSDL();
 void CloseSDL();
@@ -19,12 +22,7 @@ void CloseSDL();
 bool Update();
 
 void Render();
-SDL_Texture* LoadTextureFromFile(string filePath);
-void FreeTexture();
 
-
-float rotation = 0.00f;
-bool horizontalFlip = false;
 
 int main(int argc, char* args[]) {
 	if (InitSDL()) { //if SDL initializes successfully
@@ -67,6 +65,8 @@ bool InitSDL() //this function initializes SDL and creates the window with the p
 			SCREEN_HEIGHT,
 			SDL_WINDOW_SHOWN);
 
+
+
 		//if the window has failed to be created
 		if (gWindow == NULL) {
 			//then...
@@ -83,15 +83,15 @@ bool InitSDL() //this function initializes SDL and creates the window with the p
 				cout << "SDL_Image could not initialize. Error: " << IMG_GetError(); //As we are dealing with the IMG library now we use IMG_GetError() instead of SDL_GetError()
 				return false; //return false, exits the program
 			}
+
+			gTexture = new Texture2D(gRenderer);
+			if (!gTexture->LoadFromFile("Images/test.bmp")) {
+				return false;
+			}
 		}
 		else {
 			cout << "Renderer could not initialize. Error: " << SDL_GetError();
 			return false; //return false, exits the program
-		}
-		
-		gTexture = LoadTextureFromFile("Images/test.bmp");
-		if (gTexture == NULL) {
-			return false;
 		}
 
 		return true; //return true, starts the game loop.
@@ -103,13 +103,13 @@ void CloseSDL() //this function will destroy anything SDL based left in the memo
 	SDL_DestroyWindow(gWindow);
 	gWindow = NULL; //sets the memory address for gWindow to NULL (0) this means that the memory address is essentially deleted
 
-	//cleans up the memory used by the texture
-	FreeTexture();
 
 	//releases the renderer
 	SDL_DestroyRenderer(gRenderer);
 	gRenderer = NULL;
 
+	delete gTexture;
+	gTexture = NULL;
 
 	IMG_Quit(); //unloads the IMG related libraries
 	SDL_Quit(); //unloads the SDL related libraries
@@ -130,21 +130,12 @@ bool Update()
 		case SDLK_ESCAPE: //if the player presses Esc then the game will quit
 			return true;
 			break;
-
-		case SDLK_f:
-			horizontalFlip = !horizontalFlip;
-			break;
 		}
 	
 	case SDL_KEYDOWN:
 		switch (eventHandler.key.keysym.sym)
 		{
-		case SDLK_a:
-			rotation -= 0.5f;
-			break;
-		case SDLK_d:
-			rotation += 0.5f;
-			break;
+
 		}
 	}
 
@@ -156,48 +147,9 @@ void Render()
 	SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF); //uses the RGBA color model //this sets the color of the screen to red
 	SDL_RenderClear(gRenderer); 
 
-	SDL_Rect renderLocation = { 0,0, SCREEN_WIDTH, SCREEN_HEIGHT }; //rect is a struct
-
-	if (horizontalFlip) {
-		SDL_RenderCopyEx(gRenderer, gTexture, NULL, &renderLocation, rotation, NULL, SDL_FLIP_HORIZONTAL);
-	}
-	else {
-		SDL_RenderCopyEx(gRenderer, gTexture, NULL, &renderLocation, rotation, NULL, SDL_FLIP_NONE); //todo explain this
-	}
+	gTexture->Render(Vector2D(), SDL_FLIP_NONE);
 	
 
 	SDL_RenderPresent(gRenderer);
-}
-
-SDL_Texture* LoadTextureFromFile(string filePath)
-{
-	FreeTexture(); //clears the memory of the current texture
-
-	SDL_Texture* pTexture = NULL;
-
-	//load the image
-	SDL_Surface* pSurface = IMG_Load(filePath.c_str());
-	if (pSurface != NULL) {
-		pTexture = SDL_CreateTextureFromSurface(gRenderer, pSurface);
-
-		if (pTexture == NULL) {
-			cout << "Unable to create texture from surface. Error: " << SDL_GetError() << endl;
-		}
-	}
-	else {
-		cout << "Unable to create texture from surface. Error: " << IMG_GetError() << endl;
-	}
-
-
-	SDL_FreeSurface(pSurface); //removes the loaded surface from memory
-	return pTexture;
-}
-
-void FreeTexture()
-{
-	if (gTexture != NULL) {
-		SDL_DestroyTexture(gTexture);
-		gTexture = NULL;
-	}
 }
 
