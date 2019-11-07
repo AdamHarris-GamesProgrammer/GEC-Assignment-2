@@ -22,6 +22,10 @@ void Render();
 SDL_Texture* LoadTextureFromFile(string filePath);
 void FreeTexture();
 
+
+float rotation = 0.00f;
+bool horizontalFlip = false;
+
 int main(int argc, char* args[]) {
 	if (InitSDL()) { //if SDL initializes successfully
 		//then...
@@ -127,9 +131,21 @@ bool Update()
 			return true;
 			break;
 
+		case SDLK_f:
+			horizontalFlip = !horizontalFlip;
+			break;
 		}
 	
-		break;
+	case SDL_KEYDOWN:
+		switch (eventHandler.key.keysym.sym)
+		{
+		case SDLK_a:
+			rotation -= 0.5f;
+			break;
+		case SDLK_d:
+			rotation += 0.5f;
+			break;
+		}
 	}
 
 	return false; //since the player has not quit then they want to continue playing therefore Update returns false
@@ -141,7 +157,14 @@ void Render()
 	SDL_RenderClear(gRenderer); 
 
 	SDL_Rect renderLocation = { 0,0, SCREEN_WIDTH, SCREEN_HEIGHT }; //rect is a struct
-	SDL_RenderCopyEx(gRenderer, gTexture, NULL, &renderLocation, 0, NULL, SDL_FLIP_NONE); //todo explain this
+
+	if (horizontalFlip) {
+		SDL_RenderCopyEx(gRenderer, gTexture, NULL, &renderLocation, rotation, NULL, SDL_FLIP_HORIZONTAL);
+	}
+	else {
+		SDL_RenderCopyEx(gRenderer, gTexture, NULL, &renderLocation, rotation, NULL, SDL_FLIP_NONE); //todo explain this
+	}
+	
 
 	SDL_RenderPresent(gRenderer);
 }
@@ -177,3 +200,6 @@ void FreeTexture()
 		gTexture = NULL;
 	}
 }
+
+//TODO comment all texture loading code
+//TODO Complete the additional work section on the SDL Tutorial 4 document
