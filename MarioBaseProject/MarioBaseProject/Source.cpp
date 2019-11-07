@@ -7,6 +7,7 @@
 #include "Constants.h"
 #include "Texture2D.h"
 #include "Commons.h"
+#include "GameScreenManager.h"
 
 using namespace std;
 
@@ -14,7 +15,8 @@ SDL_Window* gWindow = NULL;
 
 SDL_Renderer* gRenderer = NULL;
 
-Texture2D* gTexture = NULL;
+GameScreenManager* gameScreenManager;
+Uint32 gOldTime;
 
 bool InitSDL();
 void CloseSDL();
@@ -26,6 +28,8 @@ void Render();
 
 int main(int argc, char* args[]) {
 	if (InitSDL()) { //if SDL initializes successfully
+		gameScreenManager = new GameScreenManager(gRenderer, SCREEN_LEVEL1);
+		gOldTime = SDL_GetTicks();
 		//then...
 		bool quit = false;
 
@@ -84,10 +88,7 @@ bool InitSDL() //this function initializes SDL and creates the window with the p
 				return false; //return false, exits the program
 			}
 
-			gTexture = new Texture2D(gRenderer);
-			if (!gTexture->LoadFromFile("Images/test.bmp")) {
-				return false;
-			}
+
 		}
 		else {
 			cout << "Renderer could not initialize. Error: " << SDL_GetError();
@@ -103,13 +104,13 @@ void CloseSDL() //this function will destroy anything SDL based left in the memo
 	SDL_DestroyWindow(gWindow);
 	gWindow = NULL; //sets the memory address for gWindow to NULL (0) this means that the memory address is essentially deleted
 
+	delete gameScreenManager;
+	gameScreenManager = NULL;
 
 	//releases the renderer
 	SDL_DestroyRenderer(gRenderer);
 	gRenderer = NULL;
 
-	delete gTexture;
-	gTexture = NULL;
 
 	IMG_Quit(); //unloads the IMG related libraries
 	SDL_Quit(); //unloads the SDL related libraries
@@ -117,6 +118,8 @@ void CloseSDL() //this function will destroy anything SDL based left in the memo
 
 bool Update()
 {
+	Uint32 newTime = SDL_GetTicks();
+
 	SDL_Event eventHandler;
 
 	SDL_PollEvent(&eventHandler);
@@ -130,6 +133,12 @@ bool Update()
 		case SDLK_ESCAPE: //if the player presses Esc then the game will quit
 			return true;
 			break;
+
+		case SDLK_l:
+			gameScreenManager->ChangeScreen(SCREEN_MENU);
+			break;
+		case SDLK_p:
+			gameScreenManager->ChangeScreen(SCREEN_LEVEL1);
 		}
 	
 	case SDL_KEYDOWN:
@@ -139,6 +148,9 @@ bool Update()
 		}
 	}
 
+	gameScreenManager->Update((float)(newTime - gOldTime) / 1000.0f, eventHandler);
+
+	gOldTime = newTime;
 	return false; //since the player has not quit then they want to continue playing therefore Update returns false
 }
 
@@ -147,8 +159,7 @@ void Render()
 	SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF); //uses the RGBA color model //this sets the color of the screen to red
 	SDL_RenderClear(gRenderer); 
 
-	gTexture->Render(Vector2D(), SDL_FLIP_NONE);
-	
+	gameScreenManager->Render();
 
 	SDL_RenderPresent(gRenderer);
 }
