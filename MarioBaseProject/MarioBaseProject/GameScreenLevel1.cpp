@@ -11,17 +11,16 @@ GameScreenLevel1::~GameScreenLevel1() {
 	mBackgroundTexture = NULL;
 }
 
-void GameScreenLevel1::Update(float deltaTime, SDL_Event event) {
-}
+void GameScreenLevel1::Update(float deltaTime, SDL_Event event) {}
 
 void GameScreenLevel1::Render() {
-	mBackgroundTexture->Render(Vector2D(), SDL_FLIP_NONE);
+	mBackgroundTexture->Render(Vector2D(), SDL_FLIP_NONE); //renders the background texture onto the screen 
 }
 
 bool GameScreenLevel1::SetUpLevel() {
-	mBackgroundTexture = new Texture2D(mRenderer);
-	if (!mBackgroundTexture->LoadFromFile("Images/Test.bmp")) {
-		std::cout << "Failed to load background texture!";
+	mBackgroundTexture = new Texture2D(mRenderer); //creates a new texture
+	if (!mBackgroundTexture->LoadFromFile("Images/Test.bmp")) { //if it fails to load the texture
+		std::cout << "Failed to load background texture!"; //output failed
 		return false;
 	}
 	else {

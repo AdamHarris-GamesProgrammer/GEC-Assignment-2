@@ -13,13 +13,13 @@ class GameScreenLevel1 : GameScreen {
 private:
 	Texture2D* mBackgroundTexture; //we can use this as we forward declared the use of the Texture2D class
 
-	bool SetUpLevel();
+	bool SetUpLevel(); //sets up the level
 public:
 	GameScreenLevel1(SDL_Renderer* renderer);
 	~GameScreenLevel1();
 
-	void Render();
-	void Update(float deltaTime, SDL_Event event);
+	void Render(); //renders the level
+	void Update(float deltaTime, SDL_Event event); //updates the level
 };
 
 #endif

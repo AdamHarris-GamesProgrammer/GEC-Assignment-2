@@ -15,8 +15,8 @@ SDL_Window* gWindow = NULL;
 
 SDL_Renderer* gRenderer = NULL;
 
-GameScreenManager* gameScreenManager;
-Uint32 gOldTime;
+GameScreenManager* gameScreenManager; //declares a gameScreenManager pointer object
+Uint32 gOldTime; //this variable will hold the time between each frame
 
 bool InitSDL();
 void CloseSDL();
@@ -28,14 +28,14 @@ void Render();
 
 int main(int argc, char* args[]) {
 	if (InitSDL()) { //if SDL initializes successfully
-		gameScreenManager = new GameScreenManager(gRenderer, SCREEN_LEVEL1);
-		gOldTime = SDL_GetTicks();
-		//then...
+		gameScreenManager = new GameScreenManager(gRenderer, SCREEN_LEVEL1); //loads level1 as the starting level
+		gOldTime = SDL_GetTicks(); 
+		
 		bool quit = false;
 
-		while (!quit) {
-			Render();
-			quit = Update();
+		while (!quit) { 
+			Render(); //renders the screen
+			quit = Update(); //updates object positions etc
 		}
 	}
 
@@ -87,8 +87,6 @@ bool InitSDL() //this function initializes SDL and creates the window with the p
 				cout << "SDL_Image could not initialize. Error: " << IMG_GetError(); //As we are dealing with the IMG library now we use IMG_GetError() instead of SDL_GetError()
 				return false; //return false, exits the program
 			}
-
-
 		}
 		else {
 			cout << "Renderer could not initialize. Error: " << SDL_GetError();
@@ -104,12 +102,12 @@ void CloseSDL() //this function will destroy anything SDL based left in the memo
 	SDL_DestroyWindow(gWindow);
 	gWindow = NULL; //sets the memory address for gWindow to NULL (0) this means that the memory address is essentially deleted
 
-	delete gameScreenManager;
-	gameScreenManager = NULL;
+	delete gameScreenManager; //clears up the screen manager class
+	gameScreenManager = NULL; 
 
 	//releases the renderer
 	SDL_DestroyRenderer(gRenderer);
-	gRenderer = NULL;
+	gRenderer = NULL; //setting it to NULL prevents the destructor from being called twice 
 
 
 	IMG_Quit(); //unloads the IMG related libraries
@@ -118,11 +116,11 @@ void CloseSDL() //this function will destroy anything SDL based left in the memo
 
 bool Update()
 {
-	Uint32 newTime = SDL_GetTicks();
+	Uint32 newTime = SDL_GetTicks(); //sets the newTime variable equal to the amount of time since the SDL program has been initialized
 
-	SDL_Event eventHandler;
+	SDL_Event eventHandler; //declares an event
 
-	SDL_PollEvent(&eventHandler);
+	SDL_PollEvent(&eventHandler); //polls the event handler to see if any events have happened within the previous cycle
 
 	switch (eventHandler.type) {
 	case SDL_QUIT: //this event is activated by clicking the X button on the window
@@ -134,33 +132,33 @@ bool Update()
 			return true;
 			break;
 
-		case SDLK_l:
-			gameScreenManager->ChangeScreen(SCREEN_MENU);
+		case SDLK_l: //checks to see if the l key has been released
+			gameScreenManager->ChangeScreen(SCREEN_MENU); //changes to the menu level
 			break;
-		case SDLK_p:
-			gameScreenManager->ChangeScreen(SCREEN_LEVEL1);
+		case SDLK_p: //checks to see if the p key has been released
+			gameScreenManager->ChangeScreen(SCREEN_LEVEL1); //changes to the first level
 		}
 	
-	case SDL_KEYDOWN:
+	case SDL_KEYDOWN: //checks if any key is down this will be used to move the player 
 		switch (eventHandler.key.keysym.sym)
 		{
 
 		}
 	}
 
-	gameScreenManager->Update((float)(newTime - gOldTime) / 1000.0f, eventHandler);
+	gameScreenManager->Update((float)(newTime - gOldTime) / 1000.0f, eventHandler); //updates whatever level is currently being displayed
 
-	gOldTime = newTime;
+	gOldTime = newTime; //sets the gOldTime variable equal to the value of the new time as the frame has now finished
 	return false; //since the player has not quit then they want to continue playing therefore Update returns false
 }
 
 void Render()
 {
 	SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF); //uses the RGBA color model //this sets the color of the screen to red
-	SDL_RenderClear(gRenderer); 
+	SDL_RenderClear(gRenderer); //clears the current frame buffer with the current draw color
 
-	gameScreenManager->Render();
+	gameScreenManager->Render(); //renders the current screen
 
-	SDL_RenderPresent(gRenderer);
+	SDL_RenderPresent(gRenderer); //presents the current frame buffer so the user can see it
 }
 

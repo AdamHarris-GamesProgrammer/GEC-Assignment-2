@@ -10,10 +10,10 @@ public:
 	GameScreen(SDL_Renderer* renderer);
 	~GameScreen();
 
-	virtual void Render();
-	virtual void Update(float deltaTime, SDL_Event event);
+	virtual void Render(); //this is a virtual method meaning that sub classes will have there own code for this method
+	virtual void Update(float deltaTime, SDL_Event event); //takes in a time and a event such as moving etc.
 protected:
-	SDL_Renderer* mRenderer;
+	SDL_Renderer* mRenderer; //the subclasses derived from this class can use the mRenderer variable but no classes that dont inherit from it can
 private:
 
 };

@@ -3,12 +3,12 @@
 
 GameScreen::GameScreen(SDL_Renderer* renderer)
 {
-	mRenderer = renderer;
+	mRenderer = renderer; //sets the renderer
 }
 
 GameScreen::~GameScreen()
 {
-	mRenderer = NULL;
+	mRenderer = NULL; //clears the renderer
 }
 
 void GameScreen::Render(){}
