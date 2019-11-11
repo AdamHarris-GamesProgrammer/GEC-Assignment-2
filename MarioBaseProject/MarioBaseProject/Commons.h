@@ -28,3 +28,5 @@ enum FACING {
 	FACING_LEFT =0,
 	FACING_RIGHT
 };
+
+const int MovementSpeed = 3;

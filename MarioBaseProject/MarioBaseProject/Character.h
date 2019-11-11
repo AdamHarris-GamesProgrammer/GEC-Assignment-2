@@ -16,15 +16,24 @@ private:
 	bool mMovingRight;
 	bool mMovingLeft;
 
+
+
 protected:
 	SDL_Renderer* mRenderer;
 	Vector2D mPosition;
 	Texture2D* mTexture;
 
+	bool mJumping;
+	bool mCanJump;
+	float mJumpForce;
+
+	void Jump();
+
 	virtual void MoveLeft(float deltaTime);
 	virtual void MoveRight(float deltaTime);
-
+	void AddGravity(float deltaTime);
 public:
+	Character();
 	Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition);
 	~Character();
 

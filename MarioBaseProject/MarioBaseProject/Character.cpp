@@ -1,7 +1,11 @@
 #include "Character.h"
 #include "Texture2D.h"
+#include "Constants.h"
 
 
+Character::Character()
+{
+}
 
 Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition)
 {
@@ -19,51 +23,33 @@ Character::~Character()
 	mRenderer = NULL;
 }
 
+void Character::AddGravity(float deltaTime)
+{
+	mPosition.y += 100 * deltaTime;
+}
+
+void Character::Jump()
+{
+	if (!mJumping) {
+		mJumpForce = INITIAL_JUMP_FORCE;
+		mJumping = true;
+		mCanJump = false;
+	}
+}
+
 void Character::MoveLeft(float deltaTime)
 {
-	mFacingDirection = FACING_LEFT;
-	mPosition.x -= 1;
+	mPosition.x -= MovementSpeed;
 }
 
 void Character::MoveRight(float deltaTime)
 {
-	mFacingDirection = FACING_RIGHT;
-	mPosition.x += 1;
+	mPosition.x += MovementSpeed;
 }
 
-void Character::Render()
-{
-	if (mFacingDirection == FACING_RIGHT) {
-		mTexture->Render(GetPosition(), SDL_FLIP_NONE, 0);
-	}
-	else {
-		mTexture->Render(GetPosition(), SDL_FLIP_HORIZONTAL, 0);
-	}
+void Character::Render(){}
 
-}
-
-void Character::Update(float deltaTime, SDL_Event eventHandler)
-{
-
-	
-	switch (eventHandler.type)
-	{
-		case SDL_KEYDOWN:
-			switch (eventHandler.key.keysym.sym) {
-				case SDLK_a:
-					MoveLeft(deltaTime);
-					break;
-				case SDLK_d:
-					MoveRight(deltaTime);
-					break;
-			}
-	}
-	
-
-
-
-	
-}
+void Character::Update(float deltaTime, SDL_Event eventHandler){}
 
 void Character::SetPosition(Vector2D newPosition)
 {
