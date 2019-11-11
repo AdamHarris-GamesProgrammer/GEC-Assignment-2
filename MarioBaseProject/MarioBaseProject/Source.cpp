@@ -126,7 +126,7 @@ bool Update()
 	case SDL_QUIT: //this event is activated by clicking the X button on the window
 		return true; //causes the game loop to end
 		break;
-	case SDL_KEYUP:
+	case SDL_KEYDOWN:
 		switch (eventHandler.key.keysym.sym) {
 		case SDLK_ESCAPE: //if the player presses Esc then the game will quit
 			return true;
@@ -139,11 +139,6 @@ bool Update()
 			gameScreenManager->ChangeScreen(SCREEN_LEVEL1); //changes to the first level
 		}
 	
-	case SDL_KEYDOWN: //checks if any key is down this will be used to move the player 
-		switch (eventHandler.key.keysym.sym)
-		{
-
-		}
 	}
 
 	gameScreenManager->Update((float)(newTime - gOldTime) / 1000.0f, eventHandler); //updates whatever level is currently being displayed

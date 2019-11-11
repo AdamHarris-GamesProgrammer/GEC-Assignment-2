@@ -6,12 +6,15 @@
 #include "SDL.h"
 #include "Commons.h"
 #include "GameScreen.h"
+#include "Character.h"
 
 class Texture2D; //forward declares, basically says we will include it in the CPP file this allows us to make reference to it here
+class Character;
 
 class GameScreenLevel1 : GameScreen {
 private:
 	Texture2D* mBackgroundTexture; //we can use this as we forward declared the use of the Texture2D class
+	Character* myCharacter;
 
 	bool SetUpLevel(); //sets up the level
 public:

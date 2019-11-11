@@ -62,7 +62,7 @@ void Texture2D::Free()
 
 void Texture2D::Render(Vector2D newPosition, SDL_RendererFlip flip, double angle /*= 0.0f*/)
 {
-	SDL_Rect renderLocation = { 0,0, mWidth, mHeight }; //this holds the destination rect for the texture, this is where it will be rendered on the screen.
+	SDL_Rect renderLocation = { newPosition.x, newPosition.y, mWidth, mHeight }; //this holds the destination rect for the texture, this is where it will be rendered on the screen.
 
-	SDL_RenderCopyEx(mRenderer, mTexture, NULL, &renderLocation, angle, NULL, SDL_FLIP_HORIZONTAL); //copies the texture from the position of the source rect on the sprite sheet to a rotation and position on the screen
+	SDL_RenderCopyEx(mRenderer, mTexture, NULL, &renderLocation, angle, NULL, flip); //copies the texture from the position of the source rect on the sprite sheet to a rotation and position on the screen
 }

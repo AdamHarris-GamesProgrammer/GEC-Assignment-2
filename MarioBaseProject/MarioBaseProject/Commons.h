@@ -23,3 +23,8 @@ enum SCREENS { //this enum holds a list of the screens available in the game //a
 	SCREEN_GAMEOVER,
 	SCREEN_HIGHSCORES
 };
+
+enum FACING {
+	FACING_LEFT =0,
+	FACING_RIGHT
+};
