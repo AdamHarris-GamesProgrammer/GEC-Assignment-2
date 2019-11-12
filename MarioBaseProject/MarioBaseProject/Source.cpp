@@ -62,7 +62,7 @@ bool InitSDL() //this function initializes SDL and creates the window with the p
 			param h: This is the height of the window
 			param flag: This allows us to select custom flags for the window in this case we use SDL_WINDOW_SHOW, this means that the window will automatically open and be in focus
 		*/ 
-		gWindow = SDL_CreateWindow("Mario Bros - Assignment 2",
+		gWindow = SDL_CreateWindow("Mario Bros",
 			SDL_WINDOWPOS_UNDEFINED,
 			SDL_WINDOWPOS_UNDEFINED,
 			SCREEN_WIDTH,
