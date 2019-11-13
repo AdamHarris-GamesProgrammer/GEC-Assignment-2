@@ -14,7 +14,7 @@ private:
 public:
 	void Render();
 	void Update(float deltaTime, SDL_Event eventHandler);
-	CharacterMario(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition);
+	CharacterMario(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* levelMap);
 	CharacterMario();
 
 };

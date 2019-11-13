@@ -7,7 +7,7 @@ Character::Character()
 {
 }
 
-Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition)
+Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* levelMap)
 {
 	mRenderer = renderer;
 	mTexture = new Texture2D(mRenderer);
@@ -16,6 +16,8 @@ Character::Character(SDL_Renderer* renderer, std::string imagePath, Vector2D sta
 	mMovingLeft = false;
 	mMovingRight = false;
 	SetPosition(startPosition);
+	mCollisionRadius = mTexture->GetWidth()/2;
+	mCurrentLevelMap = levelMap;
 }
 
 Character::~Character()
@@ -25,7 +27,8 @@ Character::~Character()
 
 void Character::AddGravity(float deltaTime)
 {
-	mPosition.y += 100 * deltaTime;
+	mPosition.y += GRAVITY * deltaTime;
+	mCanJump = false;
 }
 
 void Character::Jump()
@@ -49,7 +52,8 @@ void Character::MoveRight(float deltaTime)
 
 void Character::Render(){}
 
-void Character::Update(float deltaTime, SDL_Event eventHandler){}
+void Character::Update(float deltaTime, SDL_Event eventHandler){
+}
 
 void Character::SetPosition(Vector2D newPosition)
 {
@@ -60,5 +64,9 @@ void Character::SetPosition(Vector2D newPosition)
 Vector2D Character::GetPosition()
 {
 	return mPosition;
+}
+
+float Character::GetCollisionRadius() {
+	return mCollisionRadius;
 }
 

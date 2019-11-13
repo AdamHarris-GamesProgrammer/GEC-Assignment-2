@@ -14,6 +14,32 @@ struct Vector2D { //the vector2 struct is used to represent 2d coordinates in th
 		y = yValue;
 	}
 };
+
+struct Rect2D {
+	float x;
+	float y;
+
+	float width;
+	float height;
+
+	Rect2D(float xValue, float yValue, float widthValue, float heightValue) {
+		x = xValue;
+		y = yValue;
+		width = widthValue;
+		height = heightValue;
+	}
+};
+
+struct Circle2D {
+	Vector2D position;
+
+	float radius;
+
+	Circle2D(Vector2D vec, float radiusValue) {
+		position = vec;
+		radius = radiusValue;
+	}
+};
  
 enum SCREENS { //this enum holds a list of the screens available in the game //a screen is a game level
 	SCREEN_INTRO = 0,

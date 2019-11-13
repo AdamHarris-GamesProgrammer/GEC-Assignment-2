@@ -149,7 +149,7 @@ bool Update()
 
 void Render()
 {
-	SDL_SetRenderDrawColor(gRenderer, 0xFF, 0x00, 0x00, 0xFF); //uses the RGBA color model //this sets the color of the screen to red
+	SDL_SetRenderDrawColor(gRenderer, 0x00, 0x00, 0x00, 0xFF); //uses the RGBA color model //this sets the color of the screen to red
 	SDL_RenderClear(gRenderer); //clears the current frame buffer with the current draw color
 
 	gameScreenManager->Render(); //renders the current screen

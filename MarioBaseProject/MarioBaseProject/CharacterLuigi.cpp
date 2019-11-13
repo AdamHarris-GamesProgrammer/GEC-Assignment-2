@@ -4,7 +4,7 @@
 #include "Constants.h"
 #include "Commons.h"
 
-CharacterLuigi::CharacterLuigi(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition) : Character(renderer, imagePath, startPosition)
+CharacterLuigi::CharacterLuigi(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* levelMap) : Character(renderer, imagePath, startPosition, levelMap)
 {
 	mFacingDirection = FACING_RIGHT;
 	mMovingLeft = false;
@@ -49,12 +49,21 @@ void CharacterLuigi::Update(float deltaTime, SDL_Event eventHandler)
 			MoveRight(deltaTime);
 			break;
 		case SDLK_UP:
-			Jump();
+			if (mCanJump) {
+				Jump();
+			}
 			break;
 		}
 	}
-	if (mPosition.y <= 372) {
+	int centralXPosition = (int)(mPosition.x + (mTexture->GetWidth() * 0.5f)) / TILE_WIDTH;
+	int footPosition = (int)(mPosition.y + mTexture->GetHeight()) / TILE_HEIGHT;
+
+	if (mCurrentLevelMap->GetTileAt(footPosition, centralXPosition) == 0) {
+		mCanJump = false;
 		AddGravity(deltaTime);
+	}
+	else {
+		mCanJump = true;
 	}
 }
 

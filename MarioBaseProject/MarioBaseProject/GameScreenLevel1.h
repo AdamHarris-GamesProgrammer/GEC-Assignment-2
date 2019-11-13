@@ -9,6 +9,7 @@
 #include "Character.h"
 #include "CharacterMario.h"
 #include "CharacterLuigi.h"
+#include "LevelMap.h"
 
 class Texture2D; //forward declares, basically says we will include it in the CPP file this allows us to make reference to it here
 class Character;
@@ -20,6 +21,9 @@ private:
 	CharacterLuigi* luigiCharacter;
 
 	bool SetUpLevel(); //sets up the level
+	void SetLevelMap();
+
+	LevelMap* mLevelMap;
 public:
 	GameScreenLevel1(SDL_Renderer* renderer);
 	~GameScreenLevel1();

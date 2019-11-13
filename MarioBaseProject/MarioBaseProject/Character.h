@@ -6,6 +6,8 @@
 #include "SDL.h"
 #include <iostream>
 #include "Commons.h"
+#include "Texture2D.h"
+#include "LevelMap.h"
 
 class Texture2D;
 
@@ -23,9 +25,12 @@ protected:
 	Vector2D mPosition;
 	Texture2D* mTexture;
 
+	LevelMap* mCurrentLevelMap;
+
 	bool mJumping;
 	bool mCanJump;
 	float mJumpForce;
+	float mCollisionRadius;
 
 	void Jump();
 
@@ -34,14 +39,24 @@ protected:
 	void AddGravity(float deltaTime);
 public:
 	Character();
-	Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition);
+	Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* map);
 	~Character();
+
+	float GetCollisionRadius();
 
 	virtual void Render();
 	virtual void Update(float deltaTime, SDL_Event eventHandler);
 
 	void SetPosition(Vector2D newPosition);
 	Vector2D GetPosition();
+
+	Rect2D GetCollisionBox() {
+		return Rect2D(mPosition.x, mPosition.y, mTexture->GetWidth(), mTexture->GetHeight());
+	}
+
+	Circle2D GetCollisionCircle() {
+		return Circle2D(Vector2D(mPosition.x, mPosition.y), mCollisionRadius);
+	}
 };
 
 #endif

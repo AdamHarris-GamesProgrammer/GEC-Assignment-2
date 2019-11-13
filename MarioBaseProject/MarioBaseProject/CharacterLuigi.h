@@ -14,7 +14,7 @@ private:
 public:
 	void Render();
 	void Update(float deltaTime, SDL_Event eventHandler);
-	CharacterLuigi(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition);
+	CharacterLuigi(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* levelMap);
 	CharacterLuigi();
 
 };

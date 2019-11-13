@@ -4,7 +4,7 @@
 #include "Constants.h"
 #include "Commons.h"
 
-CharacterMario::CharacterMario(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition) : Character(renderer, imagePath, startPosition)
+CharacterMario::CharacterMario(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* mCurrentLevelMap) : Character(renderer, imagePath, startPosition, mCurrentLevelMap)
 {
 	mFacingDirection = FACING_RIGHT;
 	mMovingLeft = false;
@@ -49,12 +49,24 @@ void CharacterMario::Update(float deltaTime, SDL_Event eventHandler)
 			MoveRight(deltaTime);
 			break;
 		case SDLK_SPACE:
-			Jump();
+			if (mCanJump) {
+				Jump();
+			}
+
 			break;
 		}
 	}
-	if (mPosition.y <= 372) {
+
+	int centralXPosition = (int)(mPosition.x + (mTexture->GetWidth() * 0.5f)) / TILE_WIDTH;
+	int footPosition = (int)(mPosition.y + mTexture->GetHeight()) / TILE_HEIGHT;
+
+	if (mCurrentLevelMap->GetTileAt(footPosition, centralXPosition) == 0) {
 		AddGravity(deltaTime);
+		std::cout << "Not grounded" << std::endl;
+	}
+	else {
+		std::cout << "Grounded" << std::endl;
+		mCanJump = true;
 	}
 }
 
