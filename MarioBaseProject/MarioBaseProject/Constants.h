@@ -13,3 +13,5 @@
 
 #define TILE_WIDTH	32
 #define TILE_HEIGHT	32
+
+#define SCREENSHAKE_DURATION 0.25f

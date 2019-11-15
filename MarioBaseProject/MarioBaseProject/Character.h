@@ -57,6 +57,10 @@ public:
 	Circle2D GetCollisionCircle() {
 		return Circle2D(Vector2D(mPosition.x, mPosition.y), mCollisionRadius);
 	}
+
+	bool IsJumping() { return mJumping; }
+
+	void CancelJump();
 };
 
 #endif

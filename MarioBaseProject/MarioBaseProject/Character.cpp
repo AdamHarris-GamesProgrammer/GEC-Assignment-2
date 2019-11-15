@@ -66,6 +66,11 @@ Vector2D Character::GetPosition()
 	return mPosition;
 }
 
+void Character::CancelJump()
+{
+	mJumpForce = 0;
+}
+
 float Character::GetCollisionRadius() {
 	return mCollisionRadius;
 }

@@ -62,10 +62,8 @@ void CharacterMario::Update(float deltaTime, SDL_Event eventHandler)
 
 	if (mCurrentLevelMap->GetTileAt(footPosition, centralXPosition) == 0) {
 		AddGravity(deltaTime);
-		std::cout << "Not grounded" << std::endl;
 	}
 	else {
-		std::cout << "Grounded" << std::endl;
 		mCanJump = true;
 	}
 }
