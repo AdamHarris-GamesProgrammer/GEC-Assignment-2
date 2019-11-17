@@ -51,8 +51,13 @@ enum SCREENS { //this enum holds a list of the screens available in the game //a
 };
 
 enum FACING {
-	FACING_LEFT =0,
+	FACING_LEFT = 0,
 	FACING_RIGHT
+};
+
+enum CHARACTER_STATE {
+	ALIVE = 0,
+	DEAD
 };
 
 const int MovementSpeed = 3;

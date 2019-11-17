@@ -7,6 +7,7 @@
 class CharacterMario : public Character {
 private:
 	FACING mFacingDirection;
+	CHARACTER_STATE mCharacterState;
 
 	bool mMovingRight;
 	bool mMovingLeft;
@@ -16,6 +17,8 @@ public:
 	void Update(float deltaTime, SDL_Event eventHandler);
 	CharacterMario(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* levelMap);
 	CharacterMario();
+
+	void SetState(CHARACTER_STATE state);
 
 };
 

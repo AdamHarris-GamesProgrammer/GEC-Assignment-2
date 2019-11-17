@@ -12,6 +12,16 @@ CharacterMario::CharacterMario(SDL_Renderer* renderer, std::string imagePath, Ve
 	SetPosition(startPosition);
 }
 
+CharacterMario::CharacterMario()
+{
+
+}
+
+void CharacterMario::SetState(CHARACTER_STATE state)
+{
+	mCharacterState = state;
+}
+
 void CharacterMario::Render() 
 {
 	if (mFacingDirection == FACING_RIGHT) {

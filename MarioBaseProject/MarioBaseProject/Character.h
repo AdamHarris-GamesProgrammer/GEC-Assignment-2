@@ -13,12 +13,6 @@ class Texture2D;
 
 class Character {
 private:
-	FACING mFacingDirection;
-
-	bool mMovingRight;
-	bool mMovingLeft;
-
-
 
 protected:
 	SDL_Renderer* mRenderer;
@@ -37,6 +31,11 @@ protected:
 	virtual void MoveLeft(float deltaTime);
 	virtual void MoveRight(float deltaTime);
 	void AddGravity(float deltaTime);
+	FACING mFacingDirection;
+
+	bool mMovingRight;
+	bool mMovingLeft;
+
 public:
 	Character();
 	Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* map);
