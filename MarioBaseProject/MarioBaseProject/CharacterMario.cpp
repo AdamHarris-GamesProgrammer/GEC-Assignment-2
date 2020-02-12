@@ -76,6 +76,8 @@ void CharacterMario::Update(float deltaTime, SDL_Event eventHandler)
 	else {
 		mCanJump = true;
 	}
+
+	
 }
 
 
