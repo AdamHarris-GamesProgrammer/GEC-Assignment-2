@@ -2,23 +2,18 @@
 #ifndef _CHARACTERMARIO_H
 #define _CHARACTERMATIO_H
 
-#include "Character.h"
+#include "ControllableCharacter.h"
 
-class CharacterMario : public Character {
+class CharacterMario : public ControllableCharacter {
 private:
-	FACING mFacingDirection;
-	CHARACTER_STATE mCharacterState;
-
-	bool mMovingRight;
-	bool mMovingLeft;
+	float mMovementSpeed = 5.0f;
 
 public:
-	void Render();
-	void Update(float deltaTime, SDL_Event eventHandler);
+	void Update(float deltaTime, SDL_Event eventHandler) override;
+	void PollInput(SDL_Event eventHandler) override;
 	CharacterMario(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* levelMap);
-	CharacterMario();
 
-	void SetState(CHARACTER_STATE state);
+	bool mCanJump = true;
 
 };
 

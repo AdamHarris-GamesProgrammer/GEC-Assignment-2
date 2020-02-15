@@ -8,7 +8,6 @@
 #include "GameScreen.h"
 #include "Character.h"
 #include "CharacterMario.h"
-#include "CharacterLuigi.h"
 #include "CharacterKoopa.h"
 #include "LevelMap.h"
 #include <vector>

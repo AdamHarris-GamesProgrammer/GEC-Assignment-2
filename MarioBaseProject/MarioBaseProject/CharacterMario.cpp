@@ -4,39 +4,24 @@
 #include "Constants.h"
 #include "Commons.h"
 
-CharacterMario::CharacterMario(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* mCurrentLevelMap) : Character(renderer, imagePath, startPosition, mCurrentLevelMap)
+CharacterMario::CharacterMario(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* mCurrentLevelMap) : ControllableCharacter(renderer, imagePath, startPosition, mCurrentLevelMap)
 {
-	mFacingDirection = FACING_RIGHT;
-	mMovingLeft = false;
-	mMovingRight = false;
 	SetPosition(startPosition);
-}
-
-CharacterMario::CharacterMario()
-{
-
-}
-
-void CharacterMario::SetState(CHARACTER_STATE state)
-{
-	mCharacterState = state;
-}
-
-void CharacterMario::Render() 
-{
-	if (mFacingDirection == FACING_RIGHT) {
-		mTexture->Render(GetPosition(), SDL_FLIP_NONE, 0);
-	}
-	else {
-		mTexture->Render(GetPosition(), SDL_FLIP_HORIZONTAL, 0);
-	}
 }
 
 void CharacterMario::Update(float deltaTime, SDL_Event eventHandler)
 {
+	PollInput(eventHandler);
+
+	float newXPos = GetPosition().x;
+	float newYPos = GetPosition().y;
+
+
 	if (mJumping) {
+		mCanJump = false;
+		std::cout << "Jumping" << std::endl;
 		//adjusts position
-		mPosition.y -= mJumpForce * deltaTime;
+		newYPos -= mJumpForce * deltaTime;
 
 		//reduces jump force
 		mJumpForce -= JUMP_FORCE_DECREMENT * deltaTime;
@@ -46,38 +31,65 @@ void CharacterMario::Update(float deltaTime, SDL_Event eventHandler)
 		}
 	}
 
-	switch (eventHandler.type)
-	{
-	case SDL_KEYDOWN:
-		switch (eventHandler.key.keysym.sym) {
-		case SDLK_a:
-			mFacingDirection = FACING_LEFT;
-			MoveLeft(deltaTime);
-			break;
-		case SDLK_d:
-			mFacingDirection = FACING_RIGHT;
-			MoveRight(deltaTime);
-			break;
-		case SDLK_SPACE:
-			if (mCanJump) {
-				Jump();
-			}
-
-			break;
-		}
+	if (mXVelocity != 0.0f) {
+		std::cout << "mXVelocity: " << mXVelocity << std::endl;
+		newXPos += mXVelocity * mMovementSpeed * deltaTime;
 	}
 
-	int centralXPosition = (int)(mPosition.x + (mTexture->GetWidth() * 0.5f)) / TILE_WIDTH;
-	int footPosition = (int)(mPosition.y + mTexture->GetHeight()) / TILE_HEIGHT;
 
-	if (mCurrentLevelMap->GetTileAt(footPosition, centralXPosition) == 0) {
-		AddGravity(deltaTime);
+	int leftTile = newXPos / TILE_WIDTH;
+	int rightTile = (newXPos + mTexture->GetWidth()) / TILE_WIDTH;
+	int topTile = newYPos / TILE_HEIGHT;
+	int bottomTile = (newYPos + mTexture->GetHeight()) / TILE_HEIGHT;
+
+
+	//left collision
+	if (mCurrentLevelMap->GetTileAt(bottomTile -1, leftTile) == 1) {
+		newXPos = GetPosition().x;
 	}
-	else {
+
+	//right collision
+	if (mCurrentLevelMap->GetTileAt(bottomTile-1, rightTile) == 1) {
+		newXPos = GetPosition().x;
+	}
+
+	//foot collision
+	if (mCurrentLevelMap->GetTileAt(bottomTile, rightTile) == 1 || mCurrentLevelMap->GetTileAt(bottomTile, leftTile) == 1) {
 		mCanJump = true;
 	}
+	else {
+		newYPos += GRAVITY * deltaTime;
+	}
 
-	
+	//head collision
+	if (mCurrentLevelMap->GetTileAt(topTile, rightTile) == 1) {
+		mJumpForce = 0.0f;
+	}
+
+	SetPosition(Vector2D(newXPos, newYPos));
+
 }
 
+void CharacterMario::PollInput(SDL_Event eventHandler)
+{
+	mXVelocity = 0.0f;
+
+	const Uint8* state = SDL_GetKeyboardState(NULL);
+
+	if (state[SDL_SCANCODE_A]) {
+		mFlipState = SDL_FLIP_HORIZONTAL;
+		mXVelocity += -25.0f;
+	}
+	else if (state[SDL_SCANCODE_D]) {
+		mFlipState = SDL_FLIP_NONE;
+		mXVelocity += 25.0f;
+	}
+
+	if (state[SDL_SCANCODE_SPACE]) {
+		if (mCanJump) {
+			Jump();
+		}
+
+	}
+}
 

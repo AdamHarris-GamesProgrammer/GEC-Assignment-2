@@ -37,7 +37,7 @@ void PowBlock::Render()
 		//sets the default values for the constructor
 		SDL_Rect portionOfSpriteSheet = { left, 0, mSingleSpriteWidth, mSingleSpriteHeight };
 
-		SDL_Rect destRect = { (int)(mPosition.x), (int)(mPosition.y), mSingleSpriteWidth, mSingleSpriteHeight };
+		SDL_Rect destRect = { mPosition.x, mPosition.y, mSingleSpriteWidth, mSingleSpriteHeight };
 
 		mTexture->Render(portionOfSpriteSheet, destRect, SDL_FLIP_NONE);
 	}

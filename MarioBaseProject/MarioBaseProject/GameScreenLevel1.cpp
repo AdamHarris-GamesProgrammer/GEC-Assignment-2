@@ -79,7 +79,7 @@ void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event event)
 			else {
 				if (Collisions::Instance()->Circle(mEnemies[i], marioCharacter)) {
 					std::cout << "Mario is dead" << std::endl;
-					marioCharacter->SetState(CHARACTER_STATE::DEAD);
+					/*marioCharacter->SetState(CHARACTER_STATE::DEAD);*/
 				}
 				
 			}
@@ -151,8 +151,8 @@ bool GameScreenLevel1::SetUpLevel() {
 void GameScreenLevel1::SetLevelMap()
 {
 	int map[MAP_HEIGHT][MAP_WIDTH] = {
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1},
+		{1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1},
 		{1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
@@ -161,8 +161,8 @@ void GameScreenLevel1::SetLevelMap()
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0},
 		{1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+		{1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1},
+		{1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1},
 		{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 	};
 

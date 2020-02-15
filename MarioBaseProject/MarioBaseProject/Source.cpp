@@ -16,7 +16,7 @@ SDL_Window* gWindow = NULL;
 SDL_Renderer* gRenderer = NULL;
 
 GameScreenManager* gameScreenManager; //declares a gameScreenManager pointer object
-Uint32 gOldTime; //this variable will hold the time between each frame
+Uint32 mTicksCount;
 
 bool InitSDL();
 void CloseSDL();
@@ -29,7 +29,6 @@ void Render();
 int main(int argc, char* args[]) {
 	if (InitSDL()) { //if SDL initializes successfully
 		gameScreenManager = new GameScreenManager(gRenderer, SCREEN_LEVEL1); //loads level1 as the starting level
-		gOldTime = SDL_GetTicks(); 
 		
 		bool quit = false;
 
@@ -93,6 +92,8 @@ bool InitSDL() //this function initializes SDL and creates the window with the p
 			return false; //return false, exits the program
 		}
 
+		mTicksCount = SDL_GetTicks();
+
 		return true; //return true, starts the game loop.
 	}
 }
@@ -116,7 +117,14 @@ void CloseSDL() //this function will destroy anything SDL based left in the memo
 
 bool Update()
 {
-	Uint32 newTime = SDL_GetTicks(); //sets the newTime variable equal to the amount of time since the SDL program has been initialized
+	while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16)); //delays the game 16ms, creating (roughly) 60fps game play
+
+	//calculates delta time
+	float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
+	if (deltaTime > 0.05f) {
+		deltaTime = 0.05f;
+	}
+	mTicksCount = SDL_GetTicks();
 
 	SDL_Event eventHandler; //declares an event
 
@@ -141,9 +149,8 @@ bool Update()
 	
 	}
 
-	gameScreenManager->Update((float)(newTime - gOldTime) / 1000.0f, eventHandler); //updates whatever level is currently being displayed
+	gameScreenManager->Update(deltaTime, eventHandler); //updates whatever level is currently being displayed
 
-	gOldTime = newTime; //sets the gOldTime variable equal to the value of the new time as the frame has now finished
 	return false; //since the player has not quit then they want to continue playing therefore Update returns false
 }
 
