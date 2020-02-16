@@ -15,21 +15,6 @@ struct Vector2D { //the vector2 struct is used to represent 2d coordinates in th
 	}
 };
 
-struct Rect2D {
-	float x;
-	float y;
-
-	float width;
-	float height;
-
-	Rect2D(float xValue, float yValue, float widthValue, float heightValue) {
-		x = xValue;
-		y = yValue;
-		width = widthValue;
-		height = heightValue;
-	}
-};
-
 struct Circle2D {
 	Vector2D position;
 

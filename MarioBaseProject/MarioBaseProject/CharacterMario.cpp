@@ -11,7 +11,7 @@ CharacterMario::CharacterMario(SDL_Renderer* renderer, std::string imagePath, Ve
 
 void CharacterMario::Update(float deltaTime, SDL_Event eventHandler)
 {
-	PollInput(eventHandler);
+	PollInput();
 
 	float newXPos = GetPosition().x;
 	float newYPos = GetPosition().y;
@@ -19,7 +19,7 @@ void CharacterMario::Update(float deltaTime, SDL_Event eventHandler)
 
 	if (mJumping) {
 		mCanJump = false;
-		std::cout << "Jumping" << std::endl;
+
 		//adjusts position
 		newYPos -= mJumpForce * deltaTime;
 
@@ -32,7 +32,6 @@ void CharacterMario::Update(float deltaTime, SDL_Event eventHandler)
 	}
 
 	if (mXVelocity != 0.0f) {
-		std::cout << "mXVelocity: " << mXVelocity << std::endl;
 		newXPos += mXVelocity * mMovementSpeed * deltaTime;
 	}
 
@@ -44,17 +43,17 @@ void CharacterMario::Update(float deltaTime, SDL_Event eventHandler)
 
 
 	//left collision
-	if (mCurrentLevelMap->GetTileAt(bottomTile -1, leftTile) == 1) {
+	if (mCurrentLevelMap->GetTileAt(bottomTile -1, leftTile) != 0) {
 		newXPos = GetPosition().x;
 	}
 
 	//right collision
-	if (mCurrentLevelMap->GetTileAt(bottomTile-1, rightTile) == 1) {
+	if (mCurrentLevelMap->GetTileAt(bottomTile-1, rightTile) != 0) {
 		newXPos = GetPosition().x;
 	}
 
 	//foot collision
-	if (mCurrentLevelMap->GetTileAt(bottomTile, rightTile) == 1 || mCurrentLevelMap->GetTileAt(bottomTile, leftTile) == 1) {
+	if (mCurrentLevelMap->GetTileAt(bottomTile, rightTile) != 0 || mCurrentLevelMap->GetTileAt(bottomTile, leftTile) != 0) {
 		mCanJump = true;
 	}
 	else {
@@ -65,12 +64,29 @@ void CharacterMario::Update(float deltaTime, SDL_Event eventHandler)
 	if (mCurrentLevelMap->GetTileAt(topTile, rightTile) == 1) {
 		mJumpForce = 0.0f;
 	}
+	if (mCurrentLevelMap->GetTileAt(topTile, leftTile) == 1) {
+		mJumpForce = 0.0f;
+	}
+
+	//restrict Mario's X Position
+	if (newXPos < 0.0f || newXPos > SCREEN_WIDTH) {
+		newXPos = GetPosition().x;
+	}
+
+	//restrict Mario's Y Position
+	if (newYPos < 0.0f || newYPos > SCREEN_HEIGHT) {
+		newYPos = GetPosition().y;
+		mJumpForce = 0.0f;
+	}
+
 
 	SetPosition(Vector2D(newXPos, newYPos));
+	mDestRect->x = mPosition.x; 
+	mDestRect->y = mPosition.y;
 
 }
 
-void CharacterMario::PollInput(SDL_Event eventHandler)
+void CharacterMario::PollInput()
 {
 	mXVelocity = 0.0f;
 

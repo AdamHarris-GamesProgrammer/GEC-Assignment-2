@@ -40,13 +40,22 @@ bool Collisions::Circle(Character* character1, Character* character2)
 	return distance < combinedDistance;
 }
 
-bool Collisions::Box(Rect2D rect1, Rect2D rect2) {
-	if (rect1.x + (rect1.width / 2) > rect2.x&&
-		rect1.x + (rect1.width / 2) < rect2.x + rect2.width &&
-		rect1.y + (rect1.height / 2) > rect2.y&&
-		rect1.y + (rect1.height / 2) < rect2.y + rect2.height) {
+bool Collisions::Box(SDL_Rect& a, SDL_Rect& b) {
+	int left1 = a.x;
+	int right1 = a.x + a.w;
+	int top1 = a.y;
+	int bottom1 = a.y + a.h;
+
+	int left2 = b.x;
+	int right2 = b.x + b.w;
+	int top2 = b.y;
+	int bottom2 = b.y + b.h;
+
+
+	if ((bottom1 > top2) && (top1 < bottom2) && (right1 > left2) && (left1 < right2)) { //if there is a overlapping side
 		return true;
 	}
-
-	return false;
+	else {
+		return false;
+	}
 }

@@ -9,24 +9,30 @@
 
 class PowBlock {
 public:
-	PowBlock(SDL_Renderer* renderer, LevelMap* levelMap);
+	PowBlock(SDL_Renderer* renderer, LevelMap* levelMap, Vector2D* position);
 	~PowBlock();
 
 	void Render();
 	void TakeAHit();
 
-	bool IsAvailable() { return mNumberOfHitsLeft > 0; }
+	bool IsAvailable() { return mAvailable; }
 
-	Rect2D GetCollisionBox() { return Rect2D(mPosition.x, mPosition.y, mTexture->GetWidth(), mTexture->GetHeight()); }
+	SDL_Rect* GetDestRect() { return mDestRect; }
+	SDL_Rect* GetSrcRect() { return mSrcRect; }
 
 private:
 	SDL_Renderer* mRenderer;
-	Vector2D mPosition;
+	Vector2D* mPosition;
 	Texture2D* mTexture;
 	LevelMap* mLevelMap;
 
+	SDL_Rect* mDestRect;
+	SDL_Rect* mSrcRect;
+
 	float mSingleSpriteWidth;
 	float mSingleSpriteHeight;
+
+	bool mAvailable = true;
 
 	int mNumberOfHitsLeft;
 };

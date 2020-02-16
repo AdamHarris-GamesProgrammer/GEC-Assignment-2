@@ -1,7 +1,7 @@
 #include "PowBlock.h"
 #include <iostream>
 
-PowBlock::PowBlock(SDL_Renderer* renderer, LevelMap* levelMap)
+PowBlock::PowBlock(SDL_Renderer* renderer, LevelMap* levelMap, Vector2D* position)
 {
 	std::string imagePath = "Images/PowBlock.png";
 	mTexture = new Texture2D(renderer);
@@ -15,7 +15,19 @@ PowBlock::PowBlock(SDL_Renderer* renderer, LevelMap* levelMap)
 	mSingleSpriteWidth = mTexture->GetWidth() / 3;
 	mSingleSpriteHeight = mTexture->GetHeight();
 	mNumberOfHitsLeft = 3;
-	mPosition = Vector2D((SCREEN_WIDTH * 0.5f) - mSingleSpriteWidth * 0.5f, 260);
+	mPosition = position;
+
+	mDestRect = new SDL_Rect();
+	mDestRect->x = mPosition->x;
+	mDestRect->y = mPosition->y;
+	mDestRect->w = mSingleSpriteWidth;
+	mDestRect->h = mSingleSpriteHeight;
+
+	mSrcRect = new SDL_Rect();
+	mSrcRect->x = mSingleSpriteWidth * (mNumberOfHitsLeft - 1);
+	mSrcRect->y = 0;
+	mSrcRect->w = TILE_WIDTH;
+	mSrcRect->h = TILE_HEIGHT;
 }
 
 PowBlock::~PowBlock()
@@ -30,27 +42,26 @@ PowBlock::~PowBlock()
 
 void PowBlock::Render()
 {
-	if (mNumberOfHitsLeft > 0) {
-		//gets the position of the required sprite
-		int left = mSingleSpriteWidth * (mNumberOfHitsLeft - 1);
-
-		//sets the default values for the constructor
-		SDL_Rect portionOfSpriteSheet = { left, 0, mSingleSpriteWidth, mSingleSpriteHeight };
-
-		SDL_Rect destRect = { mPosition.x, mPosition.y, mSingleSpriteWidth, mSingleSpriteHeight };
-
-		mTexture->Render(portionOfSpriteSheet, destRect, SDL_FLIP_NONE);
+	if (mAvailable) {
+		mTexture->Render(*mSrcRect, *mDestRect, SDL_FLIP_NONE);
 	}
 }
 
 void PowBlock::TakeAHit()
 {
-	mNumberOfHitsLeft--;
+	if (mAvailable) {
+		mNumberOfHitsLeft--;
+		mSrcRect->x = mSingleSpriteWidth * (mNumberOfHitsLeft - 1);
 
-	if (mNumberOfHitsLeft <= 0) {
-		mNumberOfHitsLeft = 0;
-		mLevelMap->ChangeTileAt(8, 7, 0); //TODO Make this modular
-		mLevelMap->ChangeTileAt(8, 8, 0);
+		if (mNumberOfHitsLeft <= 0) {
+
+			mNumberOfHitsLeft = 0;
+			mAvailable = false;
+			mLevelMap->ChangeTileAt(mPosition->y / TILE_HEIGHT, mPosition->x / TILE_WIDTH, 0); 
+			
+		}
 	}
+
+
 }
 

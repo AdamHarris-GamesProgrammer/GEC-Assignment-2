@@ -44,57 +44,62 @@ void GameScreenLevel1::Update(float deltaTime, SDL_Event event) {
 
 void GameScreenLevel1::UpdatePowBlock()
 {
-	if (Collisions::Instance()->Box(mPowBlock->GetCollisionBox(), marioCharacter->GetCollisionBox())) {
-		if (mPowBlock->IsAvailable()) {
-			if (marioCharacter->IsJumping()) {
-				DoScreenShake();
-				mPowBlock->TakeAHit();
-				marioCharacter->CancelJump();
+	if (!mPowBlock.empty()) {
+		for (unsigned int i = 0; i < mPowBlock.size(); i++) {
+			if (Collisions::Instance()->Box(*mPowBlock[i]->GetDestRect(), *marioCharacter->GetDestRect())) {
+				if (mPowBlock[i]->IsAvailable()) {
+					if (marioCharacter->IsJumping()) {
+						DoScreenShake();
+						mPowBlock[i]->TakeAHit();
+						marioCharacter->CancelJump();
+					}
+				}
 			}
 		}
 	}
+
 }
 
 void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event event)
 {
-	if (!mEnemies.empty()) {
-		int enemyIndexToDelete = -1;
-		for (unsigned int i = 0; i < mEnemies.size(); i++) {
+	//if (!mEnemies.empty()) {
+	//	int enemyIndexToDelete = -1;
+	//	for (unsigned int i = 0; i < mEnemies.size(); i++) {
 
-			if (mEnemies[i]->GetPosition().y > 300.0f) {
+	//		if (mEnemies[i]->GetPosition().y > 300.0f) {
 
-				if (mEnemies[i]->GetPosition().x < (float)(-mEnemies[i]->GetCollisionBox().width * 0.5f) ||
-					mEnemies[i]->GetPosition().x > SCREEN_WIDTH - (float)(mEnemies[i]->GetCollisionBox().width * 0.55f)) 
-				{
-					mEnemies[i]->SetAlive(false);
-				}
-			}
+	//			if (mEnemies[i]->GetPosition().x < (float)(-mEnemies[i]->GetCollisionBox().width * 0.5f) ||
+	//				mEnemies[i]->GetPosition().x > SCREEN_WIDTH - (float)(mEnemies[i]->GetCollisionBox().width * 0.55f)) 
+	//			{
+	//				mEnemies[i]->SetAlive(false);
+	//			}
+	//		}
 
-			mEnemies[i]->Update(deltaTime, event);
+	//		mEnemies[i]->Update(deltaTime, event);
 
-			if ((mEnemies[i]->GetPosition().y > 300.0f || mEnemies[i]->GetPosition().y <= 64.0f) && 
-				(mEnemies[i]->GetPosition().x < 64.0f || mEnemies[i]->GetPosition().x > SCREEN_WIDTH - 96.0f)) {
-				//ignore collision if the enemy is behind a pipe
-			}
-			else {
-				if (Collisions::Instance()->Circle(mEnemies[i], marioCharacter)) {
-					std::cout << "Mario is dead" << std::endl;
-					/*marioCharacter->SetState(CHARACTER_STATE::DEAD);*/
-				}
-				
-			}
+	//		if ((mEnemies[i]->GetPosition().y > 300.0f || mEnemies[i]->GetPosition().y <= 64.0f) && 
+	//			(mEnemies[i]->GetPosition().x < 64.0f || mEnemies[i]->GetPosition().x > SCREEN_WIDTH - 96.0f)) {
+	//			//ignore collision if the enemy is behind a pipe
+	//		}
+	//		else {
+	//			if (Collisions::Instance()->Circle(mEnemies[i], marioCharacter)) {
+	//				std::cout << "Mario is dead" << std::endl;
+	//				/*marioCharacter->SetState(CHARACTER_STATE::DEAD);*/
+	//			}
+	//			
+	//		}
 
-			if (!mEnemies[i]->GetAlive()) {
-				enemyIndexToDelete = i;
-			}
+	//		if (!mEnemies[i]->GetAlive()) {
+	//			enemyIndexToDelete = i;
+	//		}
 
-			if (enemyIndexToDelete != -1) {
-				std::cout << "Enemy is deleted" << std::endl;
-				mEnemies.erase(mEnemies.begin() + enemyIndexToDelete);
-			}
+	//		if (enemyIndexToDelete != -1) {
+	//			std::cout << "Enemy is deleted" << std::endl;
+	//			mEnemies.erase(mEnemies.begin() + enemyIndexToDelete);
+	//		}
 
-		}
-	}
+	//	}
+	//}
 }
 
 void GameScreenLevel1::CreateKoopa(Vector2D position, FACING direction, float speed)
@@ -112,7 +117,10 @@ void GameScreenLevel1::CreateKoopa(Vector2D position, FACING direction, float sp
 void GameScreenLevel1::Render() {
 	mBackgroundTexture->Render(Vector2D(0, mBackgroundYPos), SDL_FLIP_NONE); //renders the background texture onto the screen 
 	marioCharacter->Render();
-	mPowBlock->Render();
+
+	for (auto powBlock : mPowBlock) {
+		powBlock->Render();
+	}
 
 	for (unsigned int i = 0; i < mEnemies.size(); i++) {
 		mEnemies[i]->Render();
@@ -126,10 +134,12 @@ bool GameScreenLevel1::SetUpLevel() {
 
 	SetLevelMap();
 
+	PowBlock* powBlock1 = new PowBlock(mRenderer, mLevelMap, new Vector2D(224, 256));
+	PowBlock* powBlock2 = new PowBlock(mRenderer, mLevelMap, new Vector2D(256,256));
 
+	mPowBlock.push_back(powBlock1);
+	mPowBlock.push_back(powBlock2);
 
-
-	mPowBlock = new PowBlock(mRenderer, mLevelMap);
 	marioCharacter = new CharacterMario(mRenderer, "Images/Mario.png", Vector2D(64, 330), mLevelMap);
 	mBackgroundTexture = new Texture2D(mRenderer); //creates a new texture
 
@@ -159,7 +169,7 @@ void GameScreenLevel1::SetLevelMap()
 		{0,0,0,0,1,1,1,1,1,1,1,1,0,0,0,0},
 		{1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-		{0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0},
+		{0,0,0,0,0,0,0,2,2,0,0,0,0,0,0,0},
 		{1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1},
 		{1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1},
 		{1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1},

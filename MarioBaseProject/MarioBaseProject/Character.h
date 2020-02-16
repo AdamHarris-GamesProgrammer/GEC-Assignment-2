@@ -30,6 +30,8 @@ protected:
 
 	SDL_RendererFlip mFlipState;
 
+	SDL_Rect* mDestRect;
+
 public:
 	Character();
 	Character(SDL_Renderer* renderer, std::string imagePath, Vector2D startPosition, LevelMap* map);
@@ -43,7 +45,7 @@ public:
 	void SetPosition(Vector2D newPosition) { mPosition = newPosition; }
 	Vector2D GetPosition() { return mPosition; }
 
-	Rect2D GetCollisionBox() { return Rect2D(mPosition.x, mPosition.y, mTexture->GetWidth(), mTexture->GetHeight()); }
+	SDL_Rect* GetDestRect() { return mDestRect; }
 
 	Circle2D GetCollisionCircle() { return Circle2D(Vector2D(mPosition.x, mPosition.y), mCollisionRadius); }
 

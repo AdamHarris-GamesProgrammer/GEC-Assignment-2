@@ -20,7 +20,7 @@ class GameScreenLevel1 : GameScreen {
 private:
 	Texture2D* mBackgroundTexture; //we can use this as we forward declared the use of the Texture2D class
 	CharacterMario* marioCharacter;
-	PowBlock* mPowBlock;
+	//PowBlock* mPowBlock;
 
 	bool SetUpLevel(); //sets up the level
 	void SetLevelMap();
@@ -33,6 +33,7 @@ private:
 	float mBackgroundYPos;
 
 	std::vector<CharacterKoopa*> mEnemies;
+	std::vector<PowBlock*> mPowBlock;
 
 	void DoScreenShake();
 
@@ -40,8 +41,8 @@ public:
 	GameScreenLevel1(SDL_Renderer* renderer);
 	~GameScreenLevel1();
 
-	void Render(); //renders the level
-	void Update(float deltaTime, SDL_Event event); //updates the level
+	void Render() override; //renders the level
+	void Update(float deltaTime, SDL_Event event) override; //updates the level
 	void UpdatePowBlock();
 
 	void UpdateEnemies(float deltaTime, SDL_Event event);
