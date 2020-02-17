@@ -19,4 +19,4 @@
 
 #define INJURED_TIME 2.5f
 
-#define KOOPA_SPEED 0.96f
+#define KOOPA_SPEED 20.0f

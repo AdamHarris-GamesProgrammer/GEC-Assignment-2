@@ -62,44 +62,11 @@ void GameScreenLevel1::UpdatePowBlock()
 
 void GameScreenLevel1::UpdateEnemies(float deltaTime, SDL_Event event)
 {
-	//if (!mEnemies.empty()) {
-	//	int enemyIndexToDelete = -1;
-	//	for (unsigned int i = 0; i < mEnemies.size(); i++) {
-
-	//		if (mEnemies[i]->GetPosition().y > 300.0f) {
-
-	//			if (mEnemies[i]->GetPosition().x < (float)(-mEnemies[i]->GetCollisionBox().width * 0.5f) ||
-	//				mEnemies[i]->GetPosition().x > SCREEN_WIDTH - (float)(mEnemies[i]->GetCollisionBox().width * 0.55f)) 
-	//			{
-	//				mEnemies[i]->SetAlive(false);
-	//			}
-	//		}
-
-	//		mEnemies[i]->Update(deltaTime, event);
-
-	//		if ((mEnemies[i]->GetPosition().y > 300.0f || mEnemies[i]->GetPosition().y <= 64.0f) && 
-	//			(mEnemies[i]->GetPosition().x < 64.0f || mEnemies[i]->GetPosition().x > SCREEN_WIDTH - 96.0f)) {
-	//			//ignore collision if the enemy is behind a pipe
-	//		}
-	//		else {
-	//			if (Collisions::Instance()->Circle(mEnemies[i], marioCharacter)) {
-	//				std::cout << "Mario is dead" << std::endl;
-	//				/*marioCharacter->SetState(CHARACTER_STATE::DEAD);*/
-	//			}
-	//			
-	//		}
-
-	//		if (!mEnemies[i]->GetAlive()) {
-	//			enemyIndexToDelete = i;
-	//		}
-
-	//		if (enemyIndexToDelete != -1) {
-	//			std::cout << "Enemy is deleted" << std::endl;
-	//			mEnemies.erase(mEnemies.begin() + enemyIndexToDelete);
-	//		}
-
-	//	}
-	//}
+	if (!mEnemies.empty()) {
+		for (auto enemy : mEnemies) {
+			enemy->Update(deltaTime, event);
+		}
+	}
 }
 
 void GameScreenLevel1::CreateKoopa(Vector2D position, FACING direction, float speed)
@@ -143,8 +110,8 @@ bool GameScreenLevel1::SetUpLevel() {
 	marioCharacter = new CharacterMario(mRenderer, "Images/Mario.png", Vector2D(64, 330), mLevelMap);
 	mBackgroundTexture = new Texture2D(mRenderer); //creates a new texture
 
-	CreateKoopa(Vector2D(150, 32), FACING_RIGHT, KOOPA_SPEED);
-	CreateKoopa(Vector2D(325, 32), FACING_LEFT, KOOPA_SPEED);
+	CreateKoopa(Vector2D(64, 32), FACING_RIGHT, KOOPA_SPEED);
+	CreateKoopa(Vector2D(SCREEN_WIDTH - 96, 32), FACING_LEFT, KOOPA_SPEED);
 
 	if (!mBackgroundTexture->LoadFromFile("Images/BackgroundMB.png")) { //if it fails to load the texture
 		std::cout << "Failed to load background texture!"; //output failed
@@ -162,7 +129,7 @@ void GameScreenLevel1::SetLevelMap()
 {
 	int map[MAP_HEIGHT][MAP_WIDTH] = {
 		{1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1},
-		{1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,1},
+		{1,1,0,0,0,0,3,0,0,3,0,0,0,0,1,1},
 		{1,1,1,1,1,1,0,0,0,0,1,1,1,1,1,1},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
 		{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},

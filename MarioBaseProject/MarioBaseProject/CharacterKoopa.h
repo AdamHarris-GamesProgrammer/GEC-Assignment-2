@@ -20,6 +20,8 @@ private:
 
 	void FlipRightWayUp();
 
+	bool bMovingRight = true;
+
 public:
 	void TakeDamage();
 	void Jump();

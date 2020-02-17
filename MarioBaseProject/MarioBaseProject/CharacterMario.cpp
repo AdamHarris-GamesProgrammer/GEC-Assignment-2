@@ -69,12 +69,12 @@ void CharacterMario::Update(float deltaTime, SDL_Event eventHandler)
 	}
 
 	//restrict Mario's X Position
-	if (newXPos < 0.0f || newXPos > SCREEN_WIDTH) {
+	if (newXPos < 0.0f || newXPos + mTexture->GetWidth() > SCREEN_WIDTH) {
 		newXPos = GetPosition().x;
 	}
 
 	//restrict Mario's Y Position
-	if (newYPos < 0.0f || newYPos > SCREEN_HEIGHT) {
+	if (newYPos < 0.0f || newYPos + mTexture->GetHeight() > SCREEN_HEIGHT) {
 		newYPos = GetPosition().y;
 		mJumpForce = 0.0f;
 	}

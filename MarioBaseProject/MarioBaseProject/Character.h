@@ -31,6 +31,7 @@ protected:
 	SDL_RendererFlip mFlipState;
 
 	SDL_Rect* mDestRect;
+	SDL_Rect* mSrcRect;
 
 public:
 	Character();
@@ -46,6 +47,7 @@ public:
 	Vector2D GetPosition() { return mPosition; }
 
 	SDL_Rect* GetDestRect() { return mDestRect; }
+	SDL_Rect* GetSrcRect() { return mSrcRect; }
 
 	Circle2D GetCollisionCircle() { return Circle2D(Vector2D(mPosition.x, mPosition.y), mCollisionRadius); }
 
