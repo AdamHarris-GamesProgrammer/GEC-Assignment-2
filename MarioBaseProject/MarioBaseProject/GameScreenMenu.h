@@ -18,8 +18,8 @@ public:
 	GameScreenMenu(SDL_Renderer* renderer); 
 	~GameScreenMenu();
 
-	void Render(); //renders the screen
-	void Update(float deltaTime, SDL_Event event); //updates the screen
+	void Render() override; //renders the screen
+	void Update(float deltaTime, SDL_Event event) override; //updates the screen
 };
 
 #endif

@@ -43,22 +43,24 @@ void CharacterMario::Update(float deltaTime, SDL_Event eventHandler)
 
 
 	//left collision
-	if (mCurrentLevelMap->GetTileAt(bottomTile -1, leftTile) != 0) {
+	if (mCurrentLevelMap->GetTileAt(bottomTile -1, leftTile) != 0 && mCurrentLevelMap->GetTileAt(bottomTile - 1, leftTile) != 3) {
 		newXPos = GetPosition().x;
 	}
 
 	//right collision
-	if (mCurrentLevelMap->GetTileAt(bottomTile-1, rightTile) != 0) {
+	if (mCurrentLevelMap->GetTileAt(bottomTile-1, rightTile) != 0 && mCurrentLevelMap->GetTileAt(bottomTile-1,rightTile) != 3) {
 		newXPos = GetPosition().x;
 	}
 
 	//foot collision
-	if (mCurrentLevelMap->GetTileAt(bottomTile, rightTile) != 0 || mCurrentLevelMap->GetTileAt(bottomTile, leftTile) != 0) {
+	if ((mCurrentLevelMap->GetTileAt(bottomTile, rightTile) != 0 || mCurrentLevelMap->GetTileAt(bottomTile, leftTile) != 0) && (mCurrentLevelMap->GetTileAt(bottomTile, rightTile) != 3 && mCurrentLevelMap->GetTileAt(bottomTile, leftTile) != 3)) {
 		mCanJump = true;
 	}
 	else {
 		newYPos += GRAVITY * deltaTime;
 	}
+
+	
 
 	//head collision
 	if (mCurrentLevelMap->GetTileAt(topTile, rightTile) == 1) {

@@ -107,7 +107,7 @@ bool GameScreenLevel1::SetUpLevel() {
 	mPowBlock.push_back(powBlock1);
 	mPowBlock.push_back(powBlock2);
 
-	marioCharacter = new CharacterMario(mRenderer, "Images/Mario.png", Vector2D(64, 330), mLevelMap);
+	marioCharacter = new CharacterMario(mRenderer, "Images/MarioTest.png", Vector2D(64, 330), mLevelMap);
 	mBackgroundTexture = new Texture2D(mRenderer); //creates a new texture
 
 	CreateKoopa(Vector2D(64, 32), FACING_RIGHT, KOOPA_SPEED);
