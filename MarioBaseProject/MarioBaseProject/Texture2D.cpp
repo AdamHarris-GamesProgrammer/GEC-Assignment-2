@@ -24,15 +24,6 @@ bool Texture2D::LoadFromFile(std::string filePath)
 	//load the image
 	SDL_Surface* pSurface = IMG_Load(filePath.c_str()); //loads the image at the required file path
 	if (pSurface != NULL) { //if the image loaded successfully
-		/*
-			SDL_SetColorKey(SDL_Surface, flag, key)
-			The color key determines a color that is to be treated as a transparent pixel, a common example of this is magenta
-			it takes 3 parameters
-			SDL_Surface: the surface is the surface that you want to pass into the function
-			Flag: the flag is the variable that determines whether the color key is activated
-			Key: the key is the color value of the pixel that will be treated as a transparent pixel in this case we are using cyan
-			
-		*/
 		SDL_SetColorKey(pSurface, SDL_TRUE, SDL_MapRGB(pSurface->format, 0, 0xff, 0xff));
 		mTexture = SDL_CreateTextureFromSurface(mRenderer, pSurface); //creates a texture pointer from an existing surface in this case pSurface
 		mWidth = pSurface->w; //sets the texture width equal to the surface width
@@ -67,7 +58,7 @@ void Texture2D::Render(Vector2D newPosition, SDL_RendererFlip flip, double angle
 	SDL_RenderCopyEx(mRenderer, mTexture, NULL, &renderLocation, angle, NULL, flip); //copies the texture from the position of the source rect on the sprite sheet to a rotation and position on the screen
 }
 
-void Texture2D::Render(SDL_Rect srcRect, SDL_Rect destRect, SDL_RendererFlip flip, double angle /*= 0.0f*/)
+void Texture2D::Render(SDL_Rect* srcRect, SDL_Rect* destRect, SDL_RendererFlip flip, double angle /*= 0.0f*/)
 {
-	SDL_RenderCopyEx(mRenderer, mTexture, &srcRect, &destRect, angle, NULL, flip);
+	SDL_RenderCopyEx(mRenderer, mTexture, srcRect, destRect, angle, NULL, flip);
 }

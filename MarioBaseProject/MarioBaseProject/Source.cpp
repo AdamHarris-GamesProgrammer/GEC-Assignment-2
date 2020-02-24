@@ -141,10 +141,10 @@ bool Update()
 			break;
 
 		case SDLK_l: //checks to see if the l key has been released
-			gameScreenManager->ChangeScreen(SCREEN_MENU); //changes to the menu level
+			gameScreenManager->ChangeScreen(SCREEN_LEVEL1); //changes to the menu level
 			break;
-		case SDLK_p: //checks to see if the p key has been released
-			gameScreenManager->ChangeScreen(SCREEN_LEVEL1); //changes to the first level
+		case SDLK_2: //checks to see if the p key has been released
+			gameScreenManager->ChangeScreen(SCREEN_LEVEL2); //changes to the first level
 		}
 	
 	}

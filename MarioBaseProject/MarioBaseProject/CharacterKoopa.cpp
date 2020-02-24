@@ -50,7 +50,7 @@ void CharacterKoopa::Jump()
 
 void CharacterKoopa::Render()
 {
-	mTexture->Render(*mSrcRect, *mDestRect, mFlipState);
+	mTexture->Render(mSrcRect, mDestRect, mFlipState);
 }
 
 void CharacterKoopa::Update(float deltaTime, SDL_Event eventHandler){

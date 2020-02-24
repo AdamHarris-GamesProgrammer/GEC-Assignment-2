@@ -17,7 +17,7 @@ public:
 	void Free(); //frees the memory associated with the texture
 	
 	void Render(Vector2D newPosition, SDL_RendererFlip flip, double angle = 0.0f); //renders the texture, with a; position, flip status and a rotation 
-	void Render(SDL_Rect srcRect, SDL_Rect destRect, SDL_RendererFlip flip, double angle = 0.0f);
+	void Render(SDL_Rect* srcRect, SDL_Rect* destRect, SDL_RendererFlip flip, double angle = 0.0f);
 
 	//returns width and height
 	int GetWidth() { return mWidth; }

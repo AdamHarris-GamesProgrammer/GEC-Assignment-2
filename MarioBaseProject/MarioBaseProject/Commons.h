@@ -31,6 +31,7 @@ enum SCREENS { //this enum holds a list of the screens available in the game //a
 	SCREEN_MENU,
 	SCREEN_LEVEL1,
 	SCREEN_LEVEL2,
+	SCREEN_LEVEL3,
 	SCREEN_GAMEOVER,
 	SCREEN_HIGHSCORES
 };

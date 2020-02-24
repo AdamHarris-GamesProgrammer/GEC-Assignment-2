@@ -43,7 +43,7 @@ PowBlock::~PowBlock()
 void PowBlock::Render()
 {
 	if (mAvailable) {
-		mTexture->Render(*mSrcRect, *mDestRect, SDL_FLIP_NONE);
+		mTexture->Render(mSrcRect, mDestRect, SDL_FLIP_NONE);
 	}
 }
 

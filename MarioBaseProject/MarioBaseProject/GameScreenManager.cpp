@@ -3,6 +3,7 @@
 
 //need to include all of the level header files here to load them
 #include "GameScreenLevel1.h"
+#include "GameScreenLevel2.h"
 #include "GameScreenMenu.h"
 
 GameScreenManager::GameScreenManager(SDL_Renderer* renderer, SCREENS startScreen)
@@ -38,6 +39,8 @@ void GameScreenManager::ChangeScreen(SCREENS newScreen)
 	GameScreenLevel1* tempScreen; //sets a temp screen to be used by level 1
 	GameScreenMenu* tempMenuScreen; //sets a temp screen to be used by the menu screen
 
+	GameScreenLevel2* level2TempScreen;
+
 	switch (newScreen)
 	{
 	case SCREEN_INTRO:
@@ -53,6 +56,12 @@ void GameScreenManager::ChangeScreen(SCREENS newScreen)
 		tempScreen = NULL;
 		break;
 	case SCREEN_LEVEL2:
+		level2TempScreen = new GameScreenLevel2(mRenderer);
+		mCurrentScreen = (GameScreen*)level2TempScreen;
+		level2TempScreen = NULL;
+		break;
+	case SCREEN_LEVEL3:
+
 		break;
 	case SCREEN_GAMEOVER:
 		break;
