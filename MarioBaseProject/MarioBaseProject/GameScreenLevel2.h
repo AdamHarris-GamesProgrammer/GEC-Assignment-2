@@ -6,6 +6,7 @@
 #include "CharacterKoopa.h"
 #include "Collisions.h"
 #include "PowBlock.h"
+#include "LevelMap.h"
 
 class GameScreenLevel2 : public TiledLevel
 {
@@ -17,5 +18,9 @@ public:
 	void Update(float deltaTime, SDL_Event event) override;
 private:
 	CharacterMario* mPlayer;
+
+	void SetLevelMap();
+
+	LevelMap* mLevelMap;
 };
 

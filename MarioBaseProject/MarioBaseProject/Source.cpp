@@ -28,7 +28,7 @@ void Render();
 
 int main(int argc, char* args[]) {
 	if (InitSDL()) { //if SDL initializes successfully
-		gameScreenManager = new GameScreenManager(gRenderer, SCREEN_LEVEL1); //loads level1 as the starting level
+		gameScreenManager = new GameScreenManager(gRenderer, SCREEN_LEVEL2); //loads level1 as the starting level
 		
 		bool quit = false;
 

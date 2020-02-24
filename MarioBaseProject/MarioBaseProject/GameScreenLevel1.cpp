@@ -148,6 +148,8 @@ void GameScreenLevel1::SetLevelMap()
 	}
 
 	mLevelMap = new LevelMap(map);
+
+	
 }
 
 void GameScreenLevel1::DoScreenShake()

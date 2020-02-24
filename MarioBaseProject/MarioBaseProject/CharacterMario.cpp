@@ -86,6 +86,7 @@ void CharacterMario::Update(float deltaTime, SDL_Event eventHandler)
 	mDestRect->x = mPosition.x; 
 	mDestRect->y = mPosition.y;
 
+
 }
 
 void CharacterMario::PollInput()

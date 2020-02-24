@@ -36,13 +36,20 @@ public:
 	int GetCalculatedLevelWidth() { return mLevelWidth * TILE_WIDTH; }
 	int GetCalculatedLevelHeight() { return mLevelHeight * TILE_HEIGHT; }
 
+	int GetLevelWidth() const { return mLevelWidth; }
+	int GetLevelHeight() const { return mLevelHeight; }
+
 	virtual void Render() override;
 	virtual void Update(float deltaTime, SDL_Event event) override;
 
 private:
 	int mLevelWidth, mLevelHeight;
 
-	std::vector<std::vector<int>> mMap;
+
+
+
+protected:
 	std::vector<std::vector<class Tile*>> mTileMap;
+	std::vector<std::vector<int>> mMap;
 };
 
